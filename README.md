@@ -1,1 +1,1 @@
-This is a project about electromagnetic railgun.
+This is a project about Real-time visual recognition electromagnetic railgun.
