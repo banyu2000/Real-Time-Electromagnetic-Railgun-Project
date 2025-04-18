@@ -36,12 +36,15 @@ This unit test:
 mkdir -p build && cd build
 cmake ..
 make
+``` 
+---
 
 The output executable will be: servo_test
 
  ### Run the Test
-
+```bash
 sudo ./servo_test
+``` 
 The horizontal servo (channel 0) will sweep from 0° to 180°
 
 The vertical servo (channel 1) will sweep from 180° to 0°
@@ -57,9 +60,9 @@ Program terminated. Servos reset.
 ### Test Outcome Criteria
 
 Metric	Condition
-I2C connection	No runtime exception
-Angle movement	Smooth servo sweep observed
-Exit handling	Servos return to neutral
+I2C connection|	No runtime exception
+Angle movement|	Smooth servo sweep observed
+Exit handling|	Servos return to neutral
 
 ### Notes：
 
