@@ -17,23 +17,27 @@ public:
     ~Window();
     void updateImage(const cv::Mat &mat);
 
-private:
-    void detectCans(cv::Mat &frame);
-    void controlServos(const cv::Rect &rect, int imgW, int imgH);
-
     QwtThermo    *thermo;
     QHBoxLayout  *hLayout;
     QLabel       *image;
 
     struct MyCallback : Libcam2OpenCV::Callback {
         Window* window = nullptr;
-        virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) override {
-            if (window) window->updateImage(frame);
+        virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+            if (nullptr != window) {
+                window->updateImage(frame);
+            }
         }
-    } myCallback;
+    };
 
     Libcam2OpenCV camera;
-    PCA9685 pca_;
+    MyCallback myCallback;
+
+private:
+    void detectCans(cv::Mat &frame); // 新增方法：检测红色易拉罐
+    PCA9685 pca; // 添加舵机控制实例
+    cv::Point target_center; 
 };
+    
 
 #endif // WINDOW_H
