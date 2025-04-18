@@ -41,6 +41,8 @@ make
 
 The output executable will be: servo_test
 
+---
+
  ### Run the Test
 ```bash
 sudo ./servo_test
@@ -51,11 +53,17 @@ The vertical servo (channel 1) will sweep from 180° to 0°
 
 Press Ctrl+C to stop – the servos will return to 90° automatically
 
+---
+
 ### Example console output:
+```yaml
 Horizontal: 0°   Vertical: 180°
 Horizontal: 10°  Vertical: 170°
 ...
 Program terminated. Servos reset.
+```
+
+---
 
 ### Test Outcome Criteria
 
@@ -63,6 +71,8 @@ Metric	Condition
 I2C connection|	No runtime exception
 Angle movement|	Smooth servo sweep observed
 Exit handling|	Servos return to neutral
+
+---
 
 ### Notes：
 
