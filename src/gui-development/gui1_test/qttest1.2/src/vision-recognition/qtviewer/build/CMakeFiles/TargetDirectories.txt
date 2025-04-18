@@ -1,0 +1,4 @@
+/home/Bob/Downloads/libcamera2opencv-master/qtviewer/build/CMakeFiles/qtviewer.dir
+/home/Bob/Downloads/libcamera2opencv-master/qtviewer/build/CMakeFiles/edit_cache.dir
+/home/Bob/Downloads/libcamera2opencv-master/qtviewer/build/CMakeFiles/rebuild_cache.dir
+/home/Bob/Downloads/libcamera2opencv-master/qtviewer/build/CMakeFiles/qtviewer_autogen.dir
