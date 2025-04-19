@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "window.h"
+
 #include "PCA9685.h"
 #include <thread>
 #include <atomic>

@@ -1,16 +1,14 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <qwt/qwt_thermo.h>
+#include <QWidget>
 #include <QBoxLayout>
-#include <QPushButton>
 #include <QLabel>
+#include <qwt/qwt_thermo.h>
 #include "libcam2opencv.h"
 #include "PCA9685.h"
 
-
-class Window : public QWidget
-{
+class Window : public QWidget {
     Q_OBJECT
 
 public:
@@ -23,12 +21,11 @@ public:
     QHBoxLayout  *hLayout;
     QLabel       *image;
 
+    // 修正回调类：删除多余的参数
     struct MyCallback : Libcam2OpenCV::Callback {
         Window* window = nullptr;
-        virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
-            if (nullptr != window) {
-                window->updateImage(frame);
-            }
+        virtual void hasFrame(const cv::Mat &frame) override {
+            if (window) window->updateImage(frame);
         }
     };
 
@@ -36,7 +33,7 @@ public:
     MyCallback myCallback;
 
 private:
-    void detectCans(cv::Mat &frame); // 新增方法：检测红色易拉罐
+    void detectCans(cv::Mat &frame);
     PCA9685* servo = nullptr;
 };
 

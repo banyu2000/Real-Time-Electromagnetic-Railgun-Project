@@ -1,47 +1,40 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.10)
+project(ServoVisionQt2)
 
-if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
-  set(CMAKE_BUILD_TYPE "RelWithDebInfo")
-endif()
+set(CMAKE_CXX_STANDARD 17)
 
-project(CamViewer
-	DESCRIPTION "Example QT application which displays the camera image"
-	LANGUAGES CXX)
-
-set (CMAKE_CXX_STANDARD 17)
-
-set (CMAKE_CXX_FLAGS "-Wall -Winvalid-pch -Wnon-virtual-dtor -Wextra -Wno-unused-parameter")
-
-find_package(PkgConfig)
-
+# 查找 Qt5 包
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
 find_package(OpenCV REQUIRED)
+find_package(Qwt REQUIRED)
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
-
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
-
-pkg_check_modules(LIBCAMERA REQUIRED IMPORTED_TARGET libcamera)
-message(STATUS "libcamera library found:")
-message(STATUS "    version: ${LIBCAMERA_VERSION}")
-message(STATUS "    libraries: ${LIBCAMERA_LINK_LIBRARIES}")
-message(STATUS "    include path: ${LIBCAMERA_INCLUDE_DIRS}")
-
-message(STATUS "opencv:")
-message(STATUS "    version: ${OpenCV_VERSION}")
-message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
-
-include_directories(${CMAKE_SOURCE_DIR} ${LIBCAMERA_INCLUDE_DIRS} ${OPENCV_INCLUDE_DIRS})
-include(GNUInstallDirs)
-
-add_executable(qtviewer
-  window.cpp
-  main.cpp
+# 所有源文件
+set(SOURCES
+    main.cpp
+    qt2.cpp
+    libcam2opencv.cpp
+    PCA9685.cpp
 )
 
-target_link_libraries(qtviewer PkgConfig::LIBCAMERA)
-target_link_libraries(qtviewer Qt5::Widgets)
-target_link_libraries(qtviewer qwt-qt5)
-target_link_libraries(qtviewer ${OpenCV_LIBS})
-target_link_libraries(qtviewer cam2opencv)
+# 所有头文件（可选：对 IDE 支持友好）
+set(HEADERS
+    qt2.h
+    libcam2opencv.h
+    PCA9685.h
+)
+
+# 创建可执行文件
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+
+# 链接库
+target_link_libraries(${PROJECT_NAME}
+    Qt5::Widgets
+    ${OpenCV_LIBS}
+)
+
+# 包含头文件路径
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${OpenCV_INCLUDE_DIRS}
+    target_link_libraries(${PROJECT_NAME} Qt5::Widgets ${OpenCV_LIBS} Qwt::Qwt)
+)

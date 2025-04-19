@@ -1,8 +1,7 @@
 #include "window.h"
 #include <opencv2/opencv.hpp>
 
-Window::Window()
-{
+Window::Window() : QWidget() {
     myCallback.window = this;
     camera.registerCallback(&myCallback);
     
@@ -19,8 +18,7 @@ Window::Window()
     camera.start();
 }
 
-Window::~Window()
-{
+Window::~Window() {
     camera.stop();
 }
 
@@ -85,9 +83,9 @@ void Window::updateImage(const cv::Mat &mat) {
     detectCans(processedFrame); // 调用优化后的检测方法
 
     // 显示处理后的图像
-    const QImage frame(processedFrame.data, processedFrame.cols, processedFrame.rows, 
-                       processedFrame.step, QImage::Format_RGB888);
-    image->setPixmap(QPixmap::fromImage(frame));
+    QImage frame(processedFrame.data, processedFrame.cols, processedFrame.rows, 
+                 processedFrame.step, QImage::Format_RGB888);
+    image->setPixmap(QPixmap::fromImage(frame.rgbSwapped()).scaled(image->size(), Qt::KeepAspectRatio));
 
     // 更新温度计（可选）
     const int h = frame.height();
