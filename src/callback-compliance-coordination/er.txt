@@ -1,0 +1,93 @@
+[ 80%] Building CXX object CMakeFiles/qtviewer.dir/qtviewer_autogen/mocs_compilation.cpp.o
+In file included from /home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/build/qtviewer_autogen/EWIEGA46WW/moc_window.cpp:10,
+                 from /home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/build/qtviewer_autogen/mocs_compilation.cpp:2:
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/build/qtviewer_autogen/EWIEGA46WW/../../../window.h:28:59: error: ‘libcamera’ does not name a type
+   28 |         virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                                                           ^~~~~~~~~
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/build/qtviewer_autogen/EWIEGA46WW/../../../window.h:28:82: error: expected unqualified-id before ‘&’ token
+   28 | tual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                                                                       ^
+
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/build/qtviewer_autogen/EWIEGA46WW/../../../window.h:28:81: error: expected ‘)’ before ‘&’ token
+   28 | tual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                   ~                                                  ^~
+      |                                                                      )
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/build/qtviewer_autogen/EWIEGA46WW/../../../window.h:28:82: error: expected ‘;’ at end of member declaration
+   28 | tual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                                                                       ^
+      |                                                                        ;
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/build/qtviewer_autogen/EWIEGA46WW/../../../window.h:28:83: error: expected unqualified-id before ‘)’ token
+   28 | tual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                                                                        ^
+
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/build/qtviewer_autogen/EWIEGA46WW/../../../window.h:36:16: error: cannot declare field ‘Window::myCallback’ to be of abstract type ‘Window::MyCallback’
+   36 |     MyCallback myCallback;
+      |                ^~~~~~~~~~
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/build/qtviewer_autogen/EWIEGA46WW/../../../window.h:26:12: note:   because the following virtual functions are pure within ‘Window::MyCallback’:
+   26 |     struct MyCallback : Libcam2OpenCV::Callback {
+      |            ^~~~~~~~~~
+In file included from /home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/build/qtviewer_autogen/EWIEGA46WW/../../../window.h:8:
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/build/qtviewer_autogen/EWIEGA46WW/../../../libcam2opencv.h:15:22: note:     ‘virtual void Libcam2OpenCV::Callback::hasFrame(const cv::Mat&)’
+   15 |         virtual void hasFrame(const cv::Mat& frame) = 0;
+      |                      ^~~~~~~~
+In file included from /home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/main.cpp:2:
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:28:59: error: ‘libcamera’ does not name a type
+   28 |         virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                                                           ^~~~~~~~~
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:28:82: error: expected unqualified-id before ‘&’ token
+   28 |         virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                                                                                  ^
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:28:81: error: expected ‘)’ before ‘&’ token
+   28 |         virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                              ~                                                  ^~
+      |                                                                                 )
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:28:82: error: expected ‘;’ at end of member declaration
+   28 |         virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                                                                                  ^
+      |                                                                                   ;
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:28:83: error: expected unqualified-id before ‘)’ token
+   28 |         virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                                                                                   ^
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:36:16: error: cannot declare field ‘Window::myCallback’ to be of abstract type ‘Window::MyCallback’
+   36 |     MyCallback myCallback;
+      |                ^~~~~~~~~~
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:26:12: note:   because the following virtual functions are pure within ‘Window::MyCallback’:
+   26 |     struct MyCallback : Libcam2OpenCV::Callback {
+      |            ^~~~~~~~~~
+In file included from /home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:8:
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/libcam2opencv.h:15:22: note:     ‘virtual void Libcam2OpenCV::Callback::hasFrame(const cv::Mat&)’
+   15 |         virtual void hasFrame(const cv::Mat& frame) = 0;
+      |                      ^~~~~~~~
+In file included from /home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.cpp:1:
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:28:59: error: ‘libcamera’ does not name a type
+   28 |         virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                                                           ^~~~~~~~~
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:28:82: error: expected unqualified-id before ‘&’ token
+   28 |         virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                                                                                  ^
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:28:81: error: expected ‘)’ before ‘&’ token
+   28 |         virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                              ~                                                  ^~
+      |                                                                                 )
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:28:82: error: expected ‘;’ at end of member declaration
+   28 |         virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                                                                                  ^
+      |                                                                                   ;
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:28:83: error: expected unqualified-id before ‘)’ token
+   28 |         virtual void hasFrame(const cv::Mat &frame, const libcamera::ControlList &) {
+      |                                                                                   ^
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:36:16: error: cannot declare field ‘Window::myCallback’ to be of abstract type ‘Window::MyCallback’
+   36 |     MyCallback myCallback;
+      |                ^~~~~~~~~~
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:26:12: note:   because the following virtual functions are pure within ‘Window::MyCallback’:
+   26 |     struct MyCallback : Libcam2OpenCV::Callback {
+      |            ^~~~~~~~~~
+In file included from /home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/window.h:8:
+/home/Bob/Downloads/Real-Time-Electromagnetic-Railgun-Project/src/callback-compliance-coordination/libcam2opencv.h:15:22: note:     ‘virtual void Libcam2OpenCV::Callback::hasFrame(const cv::Mat&)’
+   15 |         virtual void hasFrame(const cv::Mat& frame) = 0;
+      |                      ^~~~~~~~
+make[2]: *** [CMakeFiles/qtviewer.dir/build.make:76：CMakeFiles/qtviewer.dir/qtviewer_autogen/mocs_compilation.cpp.o] 错误 1
+make[2]: *** 正在等待未完成的任务....
+make[2]: *** [CMakeFiles/qtviewer.dir/build.make:90：CMakeFiles/qtviewer.dir/window.cpp.o] 错误 1
+make[2]: *** [CMakeFiles/qtviewer.dir/build.make:104：CMakeFiles/qtviewer.dir/main.cpp.o] 错误 1
+make[1]: *** [CMakeFiles/Makefile2:84：
