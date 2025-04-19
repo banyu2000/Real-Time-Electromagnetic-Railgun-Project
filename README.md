@@ -73,37 +73,44 @@ Full demo video : media/demo.mp4
 
 ---
 
-### Documentation(/docs)
+###  Documentation (`/docs`)
 
-File | Description
-project_log.md | Project development timeline & milestones
-system_architecture.md | Hardware/software architecture
-end_of_life.md | Reflection, limitations & future improvement
-credits.md | Team member responsibilities
+| File | Description |
+|------|-------------|
+| [`project_log.md`](docs/project_log.md)             | Project development timeline & milestones       |
+| [`system_architecture.md`](docs/system_architecture.md) | Hardware/software architecture               |
+| [`end_of_life.md`](docs/end_of_life.md)             | Reflection, limitations & future improvements   |
+| [`credits.md`](docs/credits.md)                     | Team member responsibilities                    |
 
 ---
 
-### Repository Structure
 
-├── src/                 # Source code (servo, vision, callback, GUI, etc.)
-├── tests/               # Functional test modules (e.g. servo_test)
-├── docs/                # Final report files, architecture, reflection
-├── media/               # Demo videos, screenshots, architecture diagrams
-├── build/               # Build output
-├── CMakeLists.txt       # Build configuration
-├── README.md            # Project summary
+### 🗂 Repository Structure
+
+- `src/` — Source code (servo, vision, callback, GUI, etc.)
+- `tests/` — Functional test modules (e.g., servo_test)
+- `docs/` — Project documentation
+  - `project_log.md` — Development timeline
+  - `system_architecture.md` — System design
+  - `end_of_life.md` — Final reflection
+  - `credits.md` — Team responsibilities
+- `media/` — Demo images, diagrams, and videos
+- `build/` — Build output folder
+- `CMakeLists.txt` — Build configuration
+- `README.md` — Main project overview
+
 
 ---
 
 ###  Contributors
 
-Name | ID | Role
-Baichuan Shi | 2982811 | Servo control, GitHub management
-Xiang Chen | 3052701 | IO logic, relay control
-Yu Ban | 2931341 | Vision detection (OpenCV)
-Kunjin Chen | 2981978 | Callback mechanism, threading
-Zhongkai Zhang | 2969533 | Qt GUI development
-
+| Name              | ID       | Role                               |
+|-------------------|----------|------------------------------------|
+| **Baichuan Shi**  | 2982811  | Servo control, GitHub management   |
+| **Xiang Chen**    | 3052701  | IO logic, relay control            |
+| **Yu Ban**        | 2931341  | Vision detection (OpenCV)          |
+| **Kunjin Chen**   | 2981978  | Callback mechanism, threading      |
+| **Zhongkai Zhang**| 2969533  | Qt GUI development                 |
 ---
 
 ### License
