@@ -1,58 +1,39 @@
 cmake_minimum_required(VERSION 3.10)
-project(SmartServoVisionSystem LANGUAGES CXX)
+project(ServoVisionControl)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-unused-parameter")
 
-# 设置构建类型
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Release)
-endif()
-
-# 自动处理 Qt 的 MOC/UIC/资源文件
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTORCC ON)
-
-# 查找依赖包
-find_package(PkgConfig REQUIRED)
+# 查找 Qt5 组件
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
+
+# 查找 OpenCV
 find_package(OpenCV REQUIRED)
 
-# libcamera 绑定（用于回调）
-pkg_check_modules(LIBCAMERA REQUIRED IMPORTED_TARGET libcamera)
-
-# 包含头文件路径
+# 包含头文件目录
 include_directories(
-    ${CMAKE_SOURCE_DIR}
+    ${Qt5Widgets_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
-    ${LIBCAMERA_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# 添加源码文件
+# 源文件列表
 set(SOURCES
     main.cpp
     window.cpp
     PCA9685.cpp
 )
 
+# 头文件（供 IDE 可视化）
 set(HEADERS
     window.h
     PCA9685.h
 )
 
-# 生成可执行文件
-add_executable(robot_app ${SOURCES} ${HEADERS})
+# 添加可执行文件
+add_executable(ServoVisionControl ${SOURCES} ${HEADERS})
 
 # 链接库
-target_link_libraries(robot_app
+target_link_libraries(ServoVisionControl
     Qt5::Widgets
     ${OpenCV_LIBS}
-    PkgConfig::LIBCAMERA
-    pthread
 )
-
-# 可选：编译信息提示
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
-message(STATUS "OpenCV version: ${OpenCV_VERSION}")
-message(STATUS "libcamera: ${LIBCAMERA_VERSION}")
