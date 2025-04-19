@@ -85,19 +85,23 @@ Full demo video : media/demo.mp4
 ---
 
 
-### 🗂 Repository Structure
+###  Repository Structure
 
-- `src/` — Source code (servo, vision, callback, GUI, etc.)
-- `tests/` — Functional test modules (e.g., servo_test)
+- `build/` — Build output directory (excluded by `.gitignore`)
 - `docs/` — Project documentation
-  - `project_log.md` — Development timeline
-  - `system_architecture.md` — System design
-  - `end_of_life.md` — Final reflection
-  - `credits.md` — Team responsibilities
-- `media/` — Demo images, diagrams, and videos
-- `build/` — Build output folder
-- `CMakeLists.txt` — Build configuration
-- `README.md` — Main project overview
+  - `project_log.md` — Development timeline and milestones
+  - `system_architecture.md` — Architecture and design overview
+  - `end_of_life.md` — Final reflection and improvement analysis
+  - `credits.md` — Team member responsibilities
+- `media/` — Demo images, GIFs, and video assets
+  - `demo.gif`, `vision_output.png`, `system_diagram.png`
+- `src/` — Main source code (servo, vision, callback, GUI, etc.)
+- `tests/` — Unit tests and module demos (e.g., `servo_test`)
+- `.gitignore` — Git exclusion rules (build folders, binaries, temp files)
+- `CMakeLists.txt` — CMake build configuration
+- `LICENSE` — MIT open-source license
+- `README.md` — Project overview, usage, and documentation links
+
 
 
 ---
