@@ -6,7 +6,6 @@
 #include <QPushButton>
 #include <QLabel>
 #include "libcam2opencv.h"
-#include "PCA9685.h"
 
 class Window : public QWidget
 {
@@ -16,6 +15,7 @@ public:
     Window();
     ~Window();
     void updateImage(const cv::Mat &mat);
+    void setServoDriver(PCA9685* driver) { servo = driver; }
 
     QwtThermo    *thermo;
     QHBoxLayout  *hLayout;
@@ -35,9 +35,7 @@ public:
 
 private:
     void detectCans(cv::Mat &frame); // 新增方法：检测红色易拉罐
-    PCA9685 pca; // 添加舵机控制实例
-    cv::Point target_center; 
+    PCA9685* servo = nullptr;
 };
-    
 
 #endif // WINDOW_H

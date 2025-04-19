@@ -16,9 +16,6 @@ Window::Window()
     hLayout->addWidget(thermo);
     hLayout->addWidget(image);
     setLayout(hLayout);
-    servo_timer = new QTimer(this);// 新增：初始化定时器，用于非阻塞舵机控制
-    connect(servo_timer, &QTimer::timeout, this, &Window::adjustServos);
-    servo_timer->start(100); // 每100ms触发一次，避免阻塞主线程
     camera.start();
 }
 
@@ -80,9 +77,6 @@ void Window::detectCans(cv::Mat &frame) {
             best_rect.y + best_rect.height/2
         );
         cv::circle(frame, center, 8, cv::Scalar(255, 0, 0), -1); // 蓝色中心点
-        target_center = center; // 记录中心坐标
-    } else {
-        target_center = cv::Point(-1, -1); // 未检测到物体时重置
     }
 }
 
@@ -101,25 +95,4 @@ void Window::updateImage(const cv::Mat &mat) {
     const QColor c = frame.pixelColor(w/2, h/2);
     thermo->setValue(c.lightness());
     update();
-}
-// window.cpp
-void Window::adjustServos() {
-    if (target_center.x == -1) return; // 未检测到物体时退出
-
-    // 获取图像中心坐标（需确保 image 控件已初始化）
-    const int img_center_x = image->width() / 2;
-    const int img_center_y = image->height() / 2;
-
-    // 计算偏差比例（范围：-1.0 ~ 1.0）
-    float delta_x = static_cast<float>(target_center.x - img_center_x) / img_center_x;
-    float delta_y = static_cast<float>(target_center.y - img_center_y) / img_center_y;
-
-    // 调整舵机角度（需校准比例系数，例如 delta_x * 5）
-    // 注意：PCA9685 驱动需添加角度记录功能（见下方说明）
-    try {
-        pca.setAngle(0, 90 + delta_x * 5); // 水平舵机（通道0）
-        pca.setAngle(1, 90 - delta_y * 5); // 垂直舵机（通道1）
-    } catch (const std::exception& e) {
-        std::cerr << "Servo Error: " << e.what() << std::endl;
-    }
 }

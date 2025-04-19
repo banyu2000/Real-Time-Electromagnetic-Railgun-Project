@@ -1,38 +1,48 @@
-cmake_minimum_required(VERSION 3.16)
-project(ServoCameraControl)
+cmake_minimum_required(VERSION 3.10)
+project(ServoVisionControl)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC ON)
 
-# 查找需要的库
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+# Qt5
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
+
+# OpenCV
 find_package(OpenCV REQUIRED)
-find_package(Qwt REQUIRED)
 
-# 包含头文件
+# pthread 用于 std::thread
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads REQUIRED)
+
+# Qwt (可选，如果你真的用了 QwtThermo)
+# find_package(Qwt REQUIRED)
+
+# 头文件路径
 include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/vision-recognition
-    ${CMAKE_CURRENT_SOURCE_DIR}/servo-control
+    ${Qt5Widgets_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
-    ${Qwt_INCLUDE_DIRS}
-    /usr/include/linux
-    /usr/include
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# 添加源文件
-add_executable(ServoCameraControl
+# 源代码文件
+set(SOURCES
     main.cpp
-    vision-recognition/window.cpp
-    servo-control/PCA9685.cpp
+    window.cpp
+    PCA9685.cpp
 )
+
+# 头文件
+set(HEADERS
+    window.h
+    PCA9685.h
+)
+
+# 编译可执行文件
+add_executable(ServoVisionControl ${SOURCES} ${HEADERS})
 
 # 链接库
-target_link_libraries(ServoCameraControl
+target_link_libraries(ServoVisionControl
     Qt5::Widgets
     ${OpenCV_LIBS}
-    ${Qwt_LIBRARIES}
-    pthread
-    rt
+    Threads::Threads
+    # Qwt::Qwt  # 如果你启用了 Qwt，取消注释
 )
