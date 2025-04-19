@@ -6,6 +6,8 @@
 #include <QPushButton>
 #include <QLabel>
 #include "libcam2opencv.h"
+#include "PCA9685.h"
+
 
 class Window : public QWidget
 {
