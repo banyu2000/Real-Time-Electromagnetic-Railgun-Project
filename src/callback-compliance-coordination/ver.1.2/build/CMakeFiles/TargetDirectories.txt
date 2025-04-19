@@ -1,0 +1,4 @@
+/home/Bob/Documents/ServoCam/build/CMakeFiles/ServoCam.dir
+/home/Bob/Documents/ServoCam/build/CMakeFiles/edit_cache.dir
+/home/Bob/Documents/ServoCam/build/CMakeFiles/rebuild_cache.dir
+/home/Bob/Documents/ServoCam/build/CMakeFiles/ServoCam_autogen.dir
