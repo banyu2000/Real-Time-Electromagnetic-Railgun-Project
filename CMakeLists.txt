@@ -1,39 +1,37 @@
 cmake_minimum_required(VERSION 3.10)
-project(ServoVisionControl)
+project(ServoVisionQt2)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# 查找 Qt5 组件
+# 查找 Qt5 包
 find_package(Qt5 REQUIRED COMPONENTS Widgets)
-
-# 查找 OpenCV
 find_package(OpenCV REQUIRED)
 
-# 包含头文件目录
-include_directories(
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${OpenCV_INCLUDE_DIRS}
-    ${CMAKE_CURRENT_SOURCE_DIR}
-)
-
-# 源文件列表
+# 所有源文件
 set(SOURCES
     main.cpp
-    window.cpp
+    qt2.cpp
+    libcam2opencv.cpp
     PCA9685.cpp
 )
 
-# 头文件（供 IDE 可视化）
+# 所有头文件（可选：对 IDE 支持友好）
 set(HEADERS
-    window.h
+    qt2.h
+    libcam2opencv.h
     PCA9685.h
 )
 
-# 添加可执行文件
-add_executable(ServoVisionControl ${SOURCES} ${HEADERS})
+# 创建可执行文件
+add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 
 # 链接库
-target_link_libraries(ServoVisionControl
+target_link_libraries(${PROJECT_NAME}
     Qt5::Widgets
     ${OpenCV_LIBS}
+)
+
+# 包含头文件路径
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${OpenCV_INCLUDE_DIRS}
 )
