@@ -1,48 +1,60 @@
-cmake_minimum_required(VERSION 3.10)
-project(ServoVisionControl)
+cmake_minimum_required(VERSION 3.6)
+
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE "RelWithDebInfo")
+endif()
+
+project(ServoVisionControl
+    DESCRIPTION "Qt + OpenCV + libcamera + PCA9685 control"
+    LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "-Wall -Winvalid-pch -Wnon-virtual-dtor -Wextra -Wno-unused-parameter")
 
-# Qt5
-find_package(Qt5 REQUIRED COMPONENTS Widgets)
+# 自动处理 Qt 元对象宏
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
-# OpenCV
+# 查找依赖
+find_package(PkgConfig REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Threads REQUIRED)  # 用于 std::thread
+# 可选：Qwt 支持
+find_package(Qwt REQUIRED)
 
-# pthread 用于 std::thread
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
+# libcamera
+pkg_check_modules(LIBCAMERA REQUIRED IMPORTED_TARGET libcamera)
 
-# Qwt (可选，如果你真的用了 QwtThermo)
-# find_package(Qwt REQUIRED)
+# 日志输出
+message(STATUS "libcamera:")
+message(STATUS "    include path: ${LIBCAMERA_INCLUDE_DIRS}")
+message(STATUS "    libraries: ${LIBCAMERA_LINK_LIBRARIES}")
+message(STATUS "OpenCV:")
+message(STATUS "    version: ${OpenCV_VERSION}")
 
-# 头文件路径
+# 头文件包含路径
 include_directories(
-    ${Qt5Widgets_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}
+    ${LIBCAMERA_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
-    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# 源代码文件
-set(SOURCES
+# 编译目标
+add_executable(ServoVisionControl
     main.cpp
     window.cpp
     PCA9685.cpp
 )
 
-# 头文件
-set(HEADERS
-    window.h
-    PCA9685.h
-)
-
-# 编译可执行文件
-add_executable(ServoVisionControl ${SOURCES} ${HEADERS})
-
-# 链接库
+# 链接依赖
 target_link_libraries(ServoVisionControl
     Qt5::Widgets
     ${OpenCV_LIBS}
+    PkgConfig::LIBCAMERA
     Threads::Threads
-    # Qwt::Qwt  # 如果你启用了 Qwt，取消注释
+    qwt-qt5
+    cam2opencv
 )
+
