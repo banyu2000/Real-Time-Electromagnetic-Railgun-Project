@@ -11,15 +11,17 @@ public:
     GPIOWrapper(const std::string& chip_name, unsigned int pin) 
         : chip_(gpiod::chip(chip_name)), 
           line_(chip_.get_line(pin)) {
+        // 初始化高电平（关断状态）
         line_.request({
             "switch_ctrl",
             gpiod::line_request::DIRECTION_OUTPUT,
             0
-        }, 0); // 初始低电平
+        }, 1); // 初始值设为1（高电平）
     }
 
+    // 设置电平（true=高电平/关断，false=低电平/导通）
     void set(bool state) {
-        line_.set_value(state ? 1 : 0);
+        line_.set_value(state ? 1 : 0); // 逻辑反转
     }
 
     ~GPIOWrapper() {
@@ -43,25 +45,32 @@ public:
         running_ = true;
         
         std::thread([this]() {
+            // 开关1导通（低电平）
             control_switch(*switch1_, 2000);
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            
+            // 间隔0.5秒
+            std::this_thread::sleep_for(500ms);
+            
+            // 开关2导通（低电平）
             control_switch(*switch2_, 1000);
+            
             running_ = false;
         }).detach();
     }
 
     void stop() {
-        switch1_->set(false);
-        switch2_->set(false);
+        // 关断时设为高电平
+        switch1_->set(true);
+        switch2_->set(true);
     }
 
 private:
     void control_switch(GPIOWrapper& sw, int duration_ms) {
-        sw.set(true);
-        std::cout << "Switch ON" << std::endl;
+        sw.set(false); // 低电平导通
+        std::cout << "开关导通（低电平）" << std::endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(duration_ms));
-        sw.set(false);
-        std::cout << "Switch OFF" << std::endl;
+        sw.set(true);  // 高电平关断
+        std::cout << "开关关断（高电平）" << std::endl;
     }
 
     std::unique_ptr<GPIOWrapper> switch1_;
@@ -91,7 +100,7 @@ void user_input_handler() {
         } else if (cmd == "exit") {
             exit_flag = true;
         } else {
-            std::cout << "Valid commands:\n  on - Start sequence\n  exit - Quit\n";
+            std::cout << "有效命令：\n  on - 启动时序\n  exit - 退出\n";
         }
     }
 }
@@ -103,7 +112,7 @@ int main() {
 
     try {
         controller = std::make_unique<SequenceController>();
-        std::cout << "System ready. GPIO27(switch1), GPIO22(switch2)" << std::endl;
+        std::cout << "系统已就绪（低电平触发）\nGPIO27-开关1，GPIO22-开关2" << std::endl;
         
         std::thread input_thread(user_input_handler);
         input_thread.detach();
@@ -113,10 +122,10 @@ int main() {
         }
 
     } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
+        std::cerr << "错误: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
 
-    std::cout << "\nSystem shutdown" << std::endl;
+    std::cout << "\n系统关闭" << std::endl;
     return EXIT_SUCCESS;
 }
