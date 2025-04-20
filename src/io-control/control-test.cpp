@@ -1,142 +1,122 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <signal.h>
-#include <pthread.h>
-#include <gpiod.h>
+#include <iostream>
+#include <string>
+#include <memory>
+#include <thread>
+#include <atomic>
+#include <csignal>
+#include <gpiod.hpp>
 
-#define GPIO_CHIP "gpiochip0"
-#define SWITCH1_PIN 27   // BCM编号27
-#define SWITCH2_PIN 22   // BCM编号22
-#define INPUT_BUFFER_SIZE 32
-
-static struct gpiod_line *switch1 = NULL;
-static struct gpiod_line *switch2 = NULL;
-
-// 线程参数结构体
-typedef struct {
-    struct gpiod_line *line;
-    int duration;
-} ThreadArg;
-
-/* 信号处理回调 */
-void signal_handler(int signo) {
-    // 关闭所有开关并释放资源
-    if (switch1) {
-        gpiod_line_set_value(switch1, 0);
-        gpiod_line_release(switch1);
-    }
-    if (switch2) {
-        gpiod_line_set_value(switch2, 0);
-        gpiod_line_release(switch2);
-    }
-    printf("\nGPIO资源已释放\n");
-    exit(0);
-}
-
-/* 开关控制线程 */
-void* switch_control(void *arg) {
-    ThreadArg *targ = (ThreadArg*)arg;
-    
-    // 导通开关（高电平）
-    gpiod_line_set_value(targ->line, 1);
-    printf("开关已导通\n");
-    
-    sleep(targ->duration);  // 保持导通
-    
-    // 关断开关（低电平）
-    gpiod_line_set_value(targ->line, 0);
-    printf("开关已关断\n");
-    
-    free(targ);
-    return NULL;
-}
-
-/* 时序控制线程 */
-void* sequence_control(void *arg) {
-    // 控制开关1
-    ThreadArg *arg1 = malloc(sizeof(ThreadArg));
-    arg1->line = switch1;
-    arg1->duration = 2;
-    pthread_t tid1;
-    pthread_create(&tid1, NULL, switch_control, arg1);
-    pthread_join(tid1, NULL);  // 等待开关1完成
-
-    sleep(0.5);  // 间隔0.5秒
-
-    // 控制开关2
-    ThreadArg *arg2 = malloc(sizeof(ThreadArg));
-    arg2->line = switch2;
-    arg2->duration = 1;
-    pthread_t tid2;
-    pthread_create(&tid2, NULL, switch_control, arg2);
-    pthread_join(tid2, NULL);  // 等待开关2完成
-
-    return NULL;
-}
-
-/* 输入处理 */
-void process_user_input() {
-    char input[INPUT_BUFFER_SIZE] = {0};
-    
-    if (!fgets(input, INPUT_BUFFER_SIZE, stdin)) {
-        perror("输入读取失败");
-        return;
+class GPIOWrapper {
+public:
+    GPIOWrapper(const std::string& chip_name, unsigned int pin) 
+        : chip_(gpiod::chip(chip_name)), 
+          line_(chip_.get_line(pin)) {
+        line_.request({
+            "switch_ctrl",
+            gpiod::line_request::DIRECTION_OUTPUT,
+            0
+        }, 0); // 初始低电平
     }
 
-    input[strcspn(input, "\n")] = 0;
+    void set(bool state) {
+        line_.set_value(state ? 1 : 0);
+    }
 
-    if (strcmp(input, "on") == 0) {
-        pthread_t seq_tid;
-        pthread_create(&seq_tid, NULL, sequence_control, NULL);
-        pthread_detach(seq_tid);
-    } else if (strcmp(input, "exit") == 0) {
-        raise(SIGINT);
-    } else {
-        printf("无效命令，可用命令：\n  on - 启动时序\n  exit - 退出\n");
+    ~GPIOWrapper() {
+        line_.release();
+    }
+
+private:
+    gpiod::chip chip_;
+    gpiod::line line_;
+};
+
+class SequenceController {
+public:
+    SequenceController()
+        : switch1_(std::make_unique<GPIOWrapper>("gpiochip0", 27)),
+          switch2_(std::make_unique<GPIOWrapper>("gpiochip0", 22)),
+          running_(false) {}
+
+    void start_sequence() {
+        if (running_) return;
+        running_ = true;
+        
+        std::thread([this]() {
+            control_switch(*switch1_, 2000);
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+            control_switch(*switch2_, 1000);
+            running_ = false;
+        }).detach();
+    }
+
+    void stop() {
+        switch1_->set(false);
+        switch2_->set(false);
+    }
+
+private:
+    void control_switch(GPIOWrapper& sw, int duration_ms) {
+        sw.set(true);
+        std::cout << "Switch ON" << std::endl;
+        std::this_thread::sleep_for(std::chrono::milliseconds(duration_ms));
+        sw.set(false);
+        std::cout << "Switch OFF" << std::endl;
+    }
+
+    std::unique_ptr<GPIOWrapper> switch1_;
+    std::unique_ptr<GPIOWrapper> switch2_;
+    std::atomic<bool> running_;
+};
+
+// 全局控制器实例和原子标志
+std::unique_ptr<SequenceController> controller;
+std::atomic<bool> exit_flag(false);
+
+void signal_handler(int) {
+    exit_flag = true;
+    if (controller) {
+        controller->stop();
+    }
+}
+
+void user_input_handler() {
+    std::string cmd;
+    while (!exit_flag) {
+        std::cout << "> ";
+        std::getline(std::cin, cmd);
+
+        if (cmd == "on") {
+            if (controller) controller->start_sequence();
+        } else if (cmd == "exit") {
+            exit_flag = true;
+        } else {
+            std::cout << "Valid commands:\n  on - Start sequence\n  exit - Quit\n";
+        }
     }
 }
 
 int main() {
-    struct gpiod_chip *chip;
+    // 注册信号处理
+    std::signal(SIGINT, signal_handler);
+    std::signal(SIGTERM, signal_handler);
 
-    // 初始化GPIO芯片
-    chip = gpiod_chip_open_by_name(GPIO_CHIP);
-    if (!chip) {
-        perror("GPIO芯片打开失败");
+    try {
+        controller = std::make_unique<SequenceController>();
+        std::cout << "System ready. GPIO27(switch1), GPIO22(switch2)" << std::endl;
+        
+        std::thread input_thread(user_input_handler);
+        input_thread.detach();
+
+        while (!exit_flag) {
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
 
-    // 初始化开关1（GPIO27）
-    switch1 = gpiod_chip_get_line(chip, SWITCH1_PIN);
-    if (!switch1 || gpiod_line_request_output(switch1, "switch1", 0) < 0) {
-        perror("开关1初始化失败");
-        goto cleanup;
-    }
-
-    // 初始化开关2（GPIO22）
-    switch2 = gpiod_chip_get_line(chip, SWITCH2_PIN);
-    if (!switch2 || gpiod_line_request_output(switch2, "switch2", 0) < 0) {
-        perror("开关2初始化失败");
-        goto cleanup;
-    }
-
-    // 注册信号处理
-    signal(SIGINT, signal_handler);
-
-    printf("时序控制系统已启动\n");
-    printf("可用命令：\n  on - 启动时序\n  exit - 退出\n");
-
-    while (1) {
-        printf("> ");
-        fflush(stdout);
-        process_user_input();
-    }
-
-cleanup:
-    if (switch1) gpiod_line_release(switch1);
-    if (switch2) gpiod_line_release(switch2);
-    if (chip) gpiod_chip_close(chip);
-    return EXIT_FAILURE;
+    std::cout << "\nSystem shutdown" << std::endl;
+    return EXIT_SUCCESS;
 }
