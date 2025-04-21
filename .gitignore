@@ -1,0 +1,28 @@
+# Build folder
+build/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# VSCode settings (optional: keep if collaborative)
+.vscode/
+
+# Compiled object files and binaries
+*.o
+*.out
+*.exe
+*.a
+*.so
+*.dll
+
+# CMake intermediate files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
