@@ -33,19 +33,20 @@ The system consists of five tightly integrated subsystems:
 All components are coordinated via real-time callbacks and thread-safe communication queues.
 ---
 ## Hardware Block Diagram
-Power Supply: 3× 18650 batteries in series
+## 🔌 Hardware Block Diagram
 
-Step-up Circuit: Boost converter with 15uH inductor + flyback diode (see schematic)
-
-Control Switches:
-
-SW1/SW2: Manual toggles (early prototype)
-
-Replaced in final design by 2-channel relay module, controlled via Raspberry Pi GPIO
-
-Capacitor: 1000μF for energy storage before discharge
-
-Discharge Switch: N-MOSFET or relay controls current path to coil
+- **Power Supply**: 3× 18650 Li‑ion batteries in series (~12 V nominal)  
+- **Step‑up Circuit**: Boost converter with 15 µH inductor + flyback diode  
+  _(or use a commercial DC–DC boost module rated for ≥20 V, ≥5 A output)_  
+- **Control Switches**:  
+  - Prototype: manual toggles SW1/SW2  
+  - Final: 2‑channel relay module driven by Raspberry Pi GPIO  
+- **Capacitor**: 1000 µF electrolytic for energy storage before discharge  
+- **Discharge Switch**: N‑MOSFET or relay to route discharge current into coil  
+- **Barrel (Launcher Coil)**:  
+  - Copper coil wound around a non‑conductive plastic tube  
+  - Steel ball projectile seated in the tube’s center  
+  - When discharged, the coil’s magnetic pulse propels the ball forward  
 
 ---
 
