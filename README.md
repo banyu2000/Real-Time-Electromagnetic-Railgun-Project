@@ -187,7 +187,7 @@ Check out our project demo on TikTok:
 Project Name: libcamera2opencv  
 Author: Bernd Porr  
 Link: https://github.com/berndporr/libcamera2opencv  
-License: MIT License  
+License: GPL-2.0 License  
 
 ---
 
