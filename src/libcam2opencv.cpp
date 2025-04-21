@@ -2,8 +2,8 @@
 #include "libcam2opencv.h"
 
 // 添加以下两行
-#include <sys/mman.h>  // 包含mmap相关定义
-#include <fcntl.h>     // 可选，确保文件控制宏
+#include <sys/mman.h>  // 
+#include <fcntl.h>     // 
 
 void Libcam2OpenCV::requestComplete(libcamera::Request *request) {
     if (nullptr == request) return;

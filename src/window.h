@@ -17,7 +17,7 @@
 #include <atomic>
 #include <gpiod.hpp>
 
-class SequenceController; // 前向声明
+class SequenceController; // 
 
 class ServoThread : public QThread {
     Q_OBJECT
@@ -94,7 +94,7 @@ private:
         }
     } myCallback;
 
-    // GPIO控制相关
+    // GPIO
     std::unique_ptr<SequenceController> gpioController;
     bool gpioTriggered = false;
     const float CENTER_THRESHOLD = 0.15f;

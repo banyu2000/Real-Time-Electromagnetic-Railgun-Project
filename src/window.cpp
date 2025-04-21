@@ -2,10 +2,10 @@
 #include "window.h"
 #include <opencv2/opencv.hpp>
 #include <QMessageBox>
-#include <thread>       // 新增头文件
-#include <chrono>       // 新增头文件
+#include <thread>       
+#include <chrono>      
 
-using namespace std::chrono_literals; // 引入时间字面量
+using namespace std::chrono_literals; 
 
 SequenceController::SequenceController() 
     : chip_("gpiochip0"), 
@@ -16,14 +16,14 @@ SequenceController::SequenceController()
     line2_.request({"switch2", gpiod::line_request::DIRECTION_OUTPUT, 0}, 1);
 }
 
-// SequenceController 的 start_sequence 函数
+// SequenceController  start_sequence 
 void SequenceController::start_sequence() {
     if (running_) return;
     running_ = true;
     
     std::thread([this]() {
         control_switch(line1_, 3000);
-        std::this_thread::sleep_for(500ms); // 500ms 已通过命名空间识别
+        std::this_thread::sleep_for(500ms); // 500ms 
         control_switch(line2_, 1000);
         running_ = false;
     }).detach();
@@ -34,10 +34,10 @@ void SequenceController::stop() {
     line2_.set_value(1);
 }
 
-// control_switch 函数
+// control_switch 
 void SequenceController::control_switch(gpiod::line& line, int duration_ms) {
     line.set_value(0);
-    std::this_thread::sleep_for(std::chrono::milliseconds(duration_ms)); // 显式指定
+    std::this_thread::sleep_for(std::chrono::milliseconds(duration_ms)); //
     line.set_value(1);
 }
 

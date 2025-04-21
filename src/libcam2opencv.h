@@ -2,11 +2,11 @@
 #ifndef __LIBCAM2OPENCV
 #define __LIBCAM2OPENCV
 
-// 先包含系统头文件
-#include <sys/mman.h>  // 确保在此处包含
+// 
+#include <sys/mman.h>  // 
 #include <opencv2/opencv.hpp>
 
-// 保存原始宏定义（处理libcamera与Qt宏冲突）
+// 
 #pragma push_macro("signals")
 #pragma push_macro("slots")
 #pragma push_macro("emit")
@@ -14,10 +14,10 @@
 #undef slots
 #undef emit
 
-// 再包含libcamera头文件
+
 #include <libcamera/libcamera.h>
 
-// 恢复Qt宏定义
+
 #pragma pop_macro("emit")
 #pragma pop_macro("slots")
 #pragma pop_macro("signals")
