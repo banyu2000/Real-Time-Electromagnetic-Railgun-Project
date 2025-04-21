@@ -27,11 +27,25 @@ Although the current system uses a railgun for demonstration, the design is modu
 
 >  Target detection + servo movement + firing sequence
 
-![Demo GIF](media/demo.gif)
+![Demo mp4](media/demo.mp4)
 
 >  Real-time detection output
 
-![Detection Example](media/vision_output.png)
+![Detection Example](media/vision_output.mp4)
+
+---
+
+##  Tests Preview
+
+Below are snapshots from our various unit- and integration‑tests, all located under the `tests/` directory:
+
+| Test Module         | Description                       | Preview                  |
+|---------------------|-----------------------------------|--------------------------|
+| **Servo Test**      | `tests/test1_servo/` sweep demo   | ![Servo Test](media/test1_servo.png) |
+| **GUI Test**        | `tests/test2_UI/` UI functionality | ![GUI Test](media/test2_ui.png)     |
+| **IO Control Test** | `tests/test3_io_control/` relay logic | ![IO Test](media/test3_io.png)      |
+| **ServoCam Test**   | `tests/test4_ServoCam/` full pipeline | ![ServoCam](media/test4_servocam.png) |
+| **Camera Test**     | `tests/test5_camera/` framerate check | ![Camera](media/test5_camera.png)   |
 
 ---
 
@@ -65,7 +79,7 @@ sudo ./servo_test
 
 - Servo sweeps automatically from 0° to 180°
 
-- Vision module detects yellow objects and overlays bounding boxes
+- Vision module detects blue objects and overlays bounding boxes
 
 - Qt UI displays live feedback and control panel
 
