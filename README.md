@@ -10,7 +10,7 @@ This project is organized into five tightly integrated subsystems, each responsi
 1. **Vision Module**  
    - Captures live video frames via libcamera  
    - Converts frames to OpenCV `cv::Mat` for processing  
-   - Applies HSV color filtering + morphological operations to detect yellow cylindrical targets  
+   - Applies HSV color filtering + morphological operations to detect blue cylindrical targets  
    - Outputs the target’s centroid coordinates and contour bounding box
 
 2. **Servo Control Module**  
