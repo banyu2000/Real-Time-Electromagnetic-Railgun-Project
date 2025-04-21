@@ -180,6 +180,17 @@ Check out our project demo on TikTok:
 [Real‑Time Electromagnetic Railgun Demo](https://www.tiktok.com/@user99861255807300?_t=ZN-8ve2aKE0Rx0&_r=1)
 
 ---
+
+
+##  Third‑Party Libraries
+
+Project Name: libcamera2opencv  
+Author: Bernd Porr  
+Link: https://github.com/berndporr/libcamera2opencv  
+License: MIT License  
+
+---
+
 ### License
 
 This project is licensed under the MIT License. See LICENSE for details.
