@@ -94,7 +94,7 @@ Below are snapshots from our various unit- and integration‑tests, all located 
 
 ##  System Overview
 
--  **Vision Module**: HSV-based yellow target detection (OpenCV)
+-  **Vision Module**: HSV-based blue target detection (OpenCV)
 -  **Servo Control**: Dual-axis aiming with PCA9685, ±0.5° accuracy
 -  **Launcher**: Electromagnetic railgun with capacitor boost & relay control
 -  **Callback & Multithreading**: Threads handle image capture, control logic, and GPIO actions
